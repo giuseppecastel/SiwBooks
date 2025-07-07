@@ -115,22 +115,17 @@ header.hero {
 }
 
 
-.card {
-  width: 300px;              /* larghezza fissa */
-  height: 450px;             /* altezza fissa */
+.card {          /* altezza fissa */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  background-color: #fef3dc;
   border-radius: 12px;
-  overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .card-image {
-  height: 300px;             /* altezza immagine */
+  height: 500px;             /* altezza immagine */
   overflow: hidden;
 }
 

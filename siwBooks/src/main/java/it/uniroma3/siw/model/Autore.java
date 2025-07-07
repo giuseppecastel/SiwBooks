@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotNull;
 public class Autore {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@NotBlank

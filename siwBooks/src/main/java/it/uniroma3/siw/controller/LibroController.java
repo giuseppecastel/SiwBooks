@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Libro;
@@ -47,6 +48,12 @@ public class LibroController {
 
 	    return "libri.html";
 	}
+	
+	 @GetMapping("/libro/{id}")
+	    public String getLibro(@PathVariable("id") Long id, Model model) {
+	        model.addAttribute("libro", this.libroService.getLibroById(id));
+	        return "libro.html";
+	    }
 
 
 }

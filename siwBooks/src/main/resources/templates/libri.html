@@ -15,7 +15,7 @@
 	</div>
     <div class="hero-text">
       <h1>Scopri la tua prossima lettura!</h1>
-      <form class="search-bar" th:action="@{/ristoranti}" method="get">
+      <form class="search-bar" th:action="@{/libri}" method="get">
         <input type="text" name="titolo" placeholder="Cerca Libro..." th:value="${param.titolo}" />
         <button type="submit"><span>&#128269;</span></button>
       </form>
@@ -34,13 +34,6 @@
               <img th:each="img : ${libro.immagine}" th:src="@{'/images/' + ${img}}" alt="Immagine Libro" />
             </a>
           </div>
-          <div class="card-content">
-            <h3 class="libro-name" th:text="${libro.titolo}">Nome Libro</h3>
-            <div th:if="${isAdmin}" class="admin-actions">
-              <a th:href="@{'/admin/modificaLibro/' + ${libro.id}}" class="button">Modifica</a>
-              <a th:href="@{'/admin/cancellaLibro/' + ${libro.id}}" class="button">Cancella</a>
-            </div>
-          </div>
         </button>
       </div>
 
@@ -53,7 +46,7 @@
     </div>
 
     <!-- Messaggio se nessun Libro trovato -->
-    <div th:if="${#lists.isEmpty(ristoranti)}" class="no-results">
+    <div th:if="${#lists.isEmpty(libri)}" class="no-results">
       <p>Nessun Libro trovato per il nome inserito.</p>
     </div>
   </main>

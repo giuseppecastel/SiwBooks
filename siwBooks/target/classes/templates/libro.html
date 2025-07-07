@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Livre</title>
+<link rel="stylesheet" href="/css/libroStyle.css" /></head>
+<body>
+  <!-- Navbar -->
+  <!-- index.html -->
+  <header class="navbar">
+	<a href="/" class="logo-button">
+	  <img src="/images/logo.png" alt="SiwBooks Logo" class="logo-img"/>
+	</a>
+  </header>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+	<div class="hero-left">
+	  <img th:src="@{'/images/' + ${libro.immagine}}" alt="Copertina libro" class="book-img"/>
+	</div>
+    <div class="hero-right">
+		<div id="book-details">
+		  <h1 th:text="${libro.titolo}">Titolo del Libro</h1>
+		  <h3>Lista Autori:</h3>
+		  <ul>
+		    <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
+		    <li th:each="autore : ${libro.autori}" th:unless="${#lists.isEmpty(libro.autori)}">
+		      <a th:href="@{/autore/{id}(id=${autore.id})}">
+		        <button type="button" th:text="${autore.nome}">Nome Autore</button>
+		      </a>
+		    </li>
+		  </ul>
+
+		  <button class="btn-read-more">Recensioni</button>
+		</div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="search-bar">
+    <input type="text" placeholder="Type to search product and hit enter" />
+    <select>
+      <option>Browse a category</option>
+      <option>Fiction</option>
+      <option>Biography</option>
+      <option>Science</option>
+    </select>
+    <button class="search-btn">🔍</button>
+  </section>
+</body>
+</html>
+
