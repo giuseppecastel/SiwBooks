@@ -15,7 +15,6 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 import it.uniroma3.siw.model.Credenziali;
-import it.uniroma3.siw.model.Utente;
 
 @Configuration
 @EnableWebSecurity
@@ -43,9 +42,7 @@ public class AuthConfiguration {
 					.requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
 					.requestMatchers(HttpMethod.GET, "/ritiro/**").authenticated()
 					.requestMatchers(HttpMethod.POST, "/ritiro/**").authenticated()
-					.requestMatchers(HttpMethod.GET, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE)
-					.requestMatchers(HttpMethod.POST, "/admin/**").hasAnyAuthority(Utente.ADMIN_ROLE)
-					.anyRequest().authenticated();
+					.anyRequest().permitAll();
 			})
 			.exceptionHandling(handling -> handling.accessDeniedPage("/"))
 			.formLogin(login -> login

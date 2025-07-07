@@ -1,0 +1,211 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+   font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #f4dbb6;
+  color: #173534;
+}
+
+.button {
+  color: #173534;           /* colore arancione caldo */
+  text-decoration: none;    /* niente sottolineatura di default */
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;               /* niente padding */
+  background: none;         /* niente sfondo */
+  border: none;             /* niente bordo */
+  font: inherit;            /* eredita font */
+}
+
+.button:hover {
+  color: #bb4a1e;           /* colore hover più scuro */
+  text-decoration: none;
+}
+
+
+
+header.hero {
+  background-color: #d44b53;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centra tutto orizzontalmente */
+  flex-direction: column; /* Stacca logo da hero-text */
+  gap: 20px;
+  text-align: center;
+}
+
+
+.logo {
+  display: flex;
+  justify-content: center;
+}
+.logo img {
+  height: 240px;
+}
+
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra tutto orizzontalmente */
+  text-align: center;
+  padding: 40px 20px;
+}
+
+
+.hero-text h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 500px; /* larghezza massima della barra di ricerca */
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #f4dbb6 ;
+  border: 1px solid #f4dbb6;
+  border-radius: 8px 0 0 8px;
+  outline: none;
+}
+
+.search-bar button {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-left: none;
+  background-color: #173534;
+  color: #eaca8e;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+}
+
+
+.main-content {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.main-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #173534;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+
+.card {
+  width: 300px;              /* larghezza fissa */
+  height: 450px;             /* altezza fissa */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background-color: #fef3dc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card-image {
+  height: 300px;             /* altezza immagine */
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* taglia o ridimensiona mantenendo proporzioni */
+}
+
+
+.card-content {
+  padding: 15px;
+}
+
+.card-content h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: rgb(213, 88, 42);
+}
+
+.card-content p {
+  font-size: 0.95rem;
+  color: #281f15;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.card-button {
+  all: unset; /* Rimuove stili di default */
+  display: block;
+  width: 100%;
+  cursor: pointer;
+}
+
+.add-card {
+	width: 300px;              /* larghezza fissa */
+	height: 450px;             /* altezza fissa */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	background-color: #fef3dc;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+}
+
+.add-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+}
+
+.add-card-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+.plus-symbol {
+  font-size: 4rem;
+  color: #173534;
+}
+
+/* Admin buttons layout */
+.admin-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
