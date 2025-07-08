@@ -27,16 +27,19 @@
     <div class="grid">
 
       <!-- Card per ogni libro -->
-      <div class="card" th:each="autore : ${autori}">
-        <button class="card-button">
-          <div class="card-image">
-            <a th:href="@{'/autore/' + ${autore.id}}">
-              <img th:each="img : ${autore.immagine}" th:src="@{'/images/' + ${img}}" alt="Immagine Autore" />
-            </a>
-          </div>
-        </button>
-      </div>
-
+	  <div class="card" th:each="autore : ${autori}">
+	    <button class="card-button">
+	      <div class="card-image">
+	        <a th:href="@{'/autore/' + ${autore.id}}">
+	          <img th:each="img : ${autore.immagine}" th:src="@{'/images/' + ${img}}" alt="Immagine Autore" />
+	        </a>
+	      </div>
+	      <div class="card-content">
+	        <h3 class="autore-name" th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</h3>
+	      </div>
+	    </button>
+	  </div>
+	  
       <!-- Card "+" visibile solo per admin -->
       <div class="card add-card" th:if="${isAdmin}">
         <a th:href="@{'/admin/formPerNuovoAutore'}" class="card-button add-card-button">

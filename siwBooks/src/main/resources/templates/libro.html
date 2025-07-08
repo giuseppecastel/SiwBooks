@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Livre</title>
+  <title>SiwBooks - Libro</title>
 <link rel="stylesheet" href="/css/libroStyle.css" /></head>
 <body>
   <!-- Navbar -->
@@ -26,12 +26,9 @@
 		  <ul>
 		    <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
 		    <li th:each="autore : ${libro.autori}" th:unless="${#lists.isEmpty(libro.autori)}">
-		      <a th:href="@{/autore/{id}(id=${autore.id})}">
-		        <button type="button" th:text="${autore.nome}">Nome Autore</button>
-		      </a>
+				<a th:href="@{/autore/{id}(id=${autore.id})}" th:text="${autore.nome + ' ' + autore.cognome}" class="author-link"></a>
 		    </li>
 		  </ul>
-
 		  <button class="btn-read-more">Recensioni</button>
 		</div>
   </section>

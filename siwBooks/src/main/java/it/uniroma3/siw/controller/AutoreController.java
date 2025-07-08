@@ -54,8 +54,8 @@ public class AutoreController {
 
 	@GetMapping("/autore/{id}")
 	public String getLibro(@PathVariable("id") Long id, Model model) {
-		model.addAttribute("libro", this.autoreService.getAutoreById(id));
-		return "libro.html";
+		model.addAttribute("autore", this.autoreService.getAutoreById(id));
+		return "autore.html";
 	}
 
 }

@@ -93,6 +93,7 @@ body {
   font-size: 2.5rem;
   margin-bottom: 20px;
   font-weight: 800;
+  color: #173534;
 }
 
 .hero-right p {
@@ -100,6 +101,11 @@ body {
   line-height: 1.6;
   margin-bottom: 30px;
   color: #555;
+}
+
+.hero-right h3{
+	margin-top: 10px;
+	color: #333;
 }
 
 .btn-read-more {
@@ -121,6 +127,18 @@ body {
   margin: 30px auto;
   max-width: 800px;
   gap: 10px;
+}
+
+.author-link{
+	font-style: italic;
+	text-decoration: none;
+	 font-weight: 600;   
+	 color: #333;
+}
+
+.author-link:visited{
+	text-decoration: none;
+	color: #333;
 }
 
 .search-bar input,

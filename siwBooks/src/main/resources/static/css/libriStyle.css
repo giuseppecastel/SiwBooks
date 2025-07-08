@@ -138,12 +138,14 @@ header.hero {
 
 .card-content {
   padding: 15px;
+  background-color: #173534;
 }
 
 .card-content h3 {
   font-size: 1.2rem;
   margin-bottom: 8px;
-  color: rgb(213, 88, 42);
+  color: #fef3dc;
+  background-color: #173534;
 }
 
 .card-content p {

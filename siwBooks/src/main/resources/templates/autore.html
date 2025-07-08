@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SiwBooks - Libro</title>
+  <title>SiwBooks - Autore</title>
 <link rel="stylesheet" href="/css/libroStyle.css" /></head>
 <body>
   <!-- Navbar -->
@@ -17,19 +17,21 @@
   <!-- Hero Section -->
   <section class="hero">
 	<div class="hero-left">
-	  <img th:src="@{'/images/' + ${libro.immagine}}" alt="Copertina libro" class="book-img"/>
+	  <img th:src="@{'/images/' + ${autore.immagine}}" alt="Foto autore" class="book-img"/>
 	</div>
     <div class="hero-right">
 		<div id="book-details">
-		  <h1 th:text="${libro.titolo}">Titolo del Libro</h1>
-		  <h3>Lista Autori:</h3>
+		  <h1 th:text="${autore.nome + ' ' + autore.cognome}">Nome Cognome</h1>
+		  <h2 th:text="${autore.nazione}">Nazione</h2>
+		  <h2 th:text="${autore.dataNascita}">Nascita</h2>
+		  <h2 th:text="${autore.dataMorte}">Morte</h2>
+		  <h3>Lista Libri:</h3>
 		  <ul>
-		    <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
-		    <li th:each="autore : ${libro.autori}" th:unless="${#lists.isEmpty(libro.autori)}">
-				<a th:href="@{/autore/{id}(id=${autore.id})}" th:text="${autore.nome + ' ' + autore.cognome}" class="author-link"></a>
+		    <li th:if="${#lists.isEmpty(autore.libri)}">Nessun libro</li>
+		    <li th:each="libro : ${autore.libri}" th:unless="${#lists.isEmpty(autore.libri)}">
+				<a th:href="@{/libro/{id}(id=${libro.id})}" th:text="${libro.titolo}" class="author-link"></a>
 		    </li>
 		  </ul>
-		  <button class="btn-read-more">Recensioni</button>
 		</div>
   </section>
 
