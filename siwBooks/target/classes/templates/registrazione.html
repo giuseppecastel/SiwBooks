@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrazione</title>
+  <link rel="stylesheet" href="/css/registrazioneStyle.css" />
+</head>
+
+<body>
+  <div class="login-wrapper">
+    <div class="login-left">
+      <img src="/logo.png" alt="Logo" class="left-image" />
+    </div>
+
+    <div class="login-right">
+      <div class="form-container">
+        <h2>Registrazione</h2>
+        <p>Compila il modulo per creare un nuovo account</p>
+
+        <form th:action="@{/registrazione}" method="POST">
+          <label for="nome">Nome</label>
+          <input type="text" id="nome" placeholder="nome" required th:field="${utente.nome}" />
+          <span th:if="${#fields.hasErrors('utente.nome')}" th:errors="${utente.nome}" style="color:red"></span>
+
+          <label for="cognome">Cognome</label>
+          <input type="text" id="cognome" placeholder="cognome" required th:field="${utente.cognome}" />
+          <span th:if="${#fields.hasErrors('utente.cognome')}" th:errors="${utente.cognome}" style="color:red"></span>
+
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="username" required th:field="${utente.username}" />
+          <span th:if="${#fields.hasErrors('utente.username')}" th:errors="${utente.username}" style="color:red"></span>
+
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="password" required th:field="${credenziali.password}" />
+          <span th:if="${#fields.hasErrors('credenziali.password')}" th:errors="${credenziali.password}" style="color:red"></span>
+		  
+		  <label for="email">Email</label>
+		  <input type="text" id="email" placeholder="email" required th:field="${utente.email}" />
+		  <span th:if="${#fields.hasErrors('utente.email')}" th:errors="${utente.email}" style="color:red"></span>
+
+          <div class="button-group">
+            <button type="submit" class="button-link">Registra</button>
+            <a href="/" class="button-link">Torna alla Home</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

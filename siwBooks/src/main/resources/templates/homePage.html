@@ -17,7 +17,15 @@
 	  </div>
 	  
 	  <div class="navbar-right">
-	    <button>Login</button>
+		<a th:if="${username}" th:text="${username}"></a>
+			<form th:if="${username}" th:action="@{/logout}" method="post">
+			  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			  <button type="submit" class="logout-button">Logout</button>
+			</form>
+		      <a th:unless="${username}" href="/login"><button>Login</button></a>
+		
+			  <a th:if="${username==NULL}" href="/registrazione">
+			      <button>Registrati</button></a>
 	  </div>
 	</header>
 

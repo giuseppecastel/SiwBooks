@@ -32,7 +32,7 @@ public class Libro {
         @Max(2025)
         private int anno;
         
-        private String immagine;
+        private Set<String> immagini;
         
         @ManyToMany
         private Set<Autore> autori;
@@ -45,12 +45,12 @@ public class Libro {
             this.id = id;
         }
 
-		public String getImmagine() {
-			return immagine;
+		public Set<String> getImmagini() {
+			return immagini;
 		}
 
-		public void setImmagine(String immagine) {
-			this.immagine = immagine;
+		public void setImmagine(Set<String> immagini) {
+			this.immagini = immagini;
 		}
 		
 		public String getTitolo() {

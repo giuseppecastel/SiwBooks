@@ -17,7 +17,7 @@
   <!-- Hero Section -->
   <section class="hero">
 	<div class="hero-left">
-	  <img th:src="@{'/images/' + ${libro.immagine}}" alt="Copertina libro" class="book-img"/>
+	  <img th:src="@{'/images/' + ${libro.immagini[0]}}" alt="Copertina libro" class="book-img"/>
 	</div>
     <div class="hero-right">
 		<div id="book-details">
