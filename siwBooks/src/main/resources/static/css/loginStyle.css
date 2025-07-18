@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body, html {
+  height: 100%;
+  overflow: auto;
+
+}
+
+.login-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+
+.login-left,
+.login-right {
+  flex: 1 1 50%;
+  min-width: 0;
+}
+
+
+.login-left {
+  display: flex;
+  justify-content: center; /* Centra orizzontalmente */
+  align-items: center;     /* Centra verticalmente */
+  background-color: #d44b53; /* fallback in caso di errore immagine */
+}
+
+.left-image {
+  max-width: 80%;  /* evita che l'immagine sia troppo grande */
+  max-height: 80%;
+  object-fit: contain;
+}
+
+.login-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4dbb6;
+  overflow: auto;
+}
+
+.logo-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column; /* o row, se li vuoi affiancati */
+  gap: 1rem; /* Distanza tra i bottoni */
+  margin-top: 1rem;
+}
+
+.button-link {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #173534;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+

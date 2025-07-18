@@ -33,6 +33,13 @@
 		    </li>
 		  </ul>
 		</div>
+		
+		<div th:if="${isAdmin}">
+		  <a th:href="@{'/admin/modificaAutore/' + ${autore.id}}" class="btn-read-more">Modifica</a>
+		  <a th:href="@{'/admin/cancellaAutore/' + ${autore.id}}" class="btn-read-more">Cancella</a>
+		</div>
+		
+		      </div>
   </section>
 
   <!-- Search Section -->

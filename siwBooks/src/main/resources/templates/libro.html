@@ -16,22 +16,31 @@
   
   <!-- Hero Section -->
   <section class="hero">
-	<div class="hero-left">
-	  <img th:src="@{'/images/' + ${libro.immagini[0]}}" alt="Copertina libro" class="book-img"/>
-	</div>
+    <div class="hero-left">
+      <img th:src="@{'/images/' + ${libro.immagini[0]}}" alt="Copertina libro" class="book-img"/>
+    </div>
     <div class="hero-right">
-		<div id="book-details">
-		  <h1 th:text="${libro.titolo}">Titolo del Libro</h1>
-		  <h3>Lista Autori:</h3>
-		  <ul>
-		    <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
-		    <li th:each="autore : ${libro.autori}" th:unless="${#lists.isEmpty(libro.autori)}">
-				<a th:href="@{/autore/{id}(id=${autore.id})}" th:text="${autore.nome + ' ' + autore.cognome}" class="author-link"></a>
-		    </li>
-		  </ul>
-		  <button class="btn-read-more">Recensioni</button>
-		</div>
+      <div id="book-details">
+        <h1 th:text="${libro.titolo}">Titolo del Libro</h1>
+        <h3>Lista Autori:</h3>
+        <ul>
+          <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
+          <li th:each="autore : ${libro.autori}" th:unless="${#lists.isEmpty(libro.autori)}">
+            <a th:href="@{/autore/{id}(id=${autore.id})}" th:text="${autore.nome + ' ' + autore.cognome}" class="author-link"></a>
+          </li>
+        </ul>
+      </div> <!-- fine book-details -->
+      
+	  <div th:if="${isAdmin}">
+	    <a th:href="@{'/admin/modificaLibro/' + ${libro.id}}" class="btn-read-more">Modifica</a>
+	    <a th:href="@{'/admin/cancellaLibro/' + ${libro.id}}" class="btn-read-more">Cancella</a>
+	  </div>
+
+		
+      </div>
+    </div> <!-- fine hero-right -->
   </section>
+ 
 
   <!-- Search Section -->
   <section class="search-bar">

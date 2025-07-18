@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Modifica Autore</title>
+</head>
+<body>
+    <h1>Modifica Autore</h1>
+	<form th:action="@{'/admin/modificaAutore/' + ${autore.id}}" th:object="${autore}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" th:field="*{nome}" required>
+        <br>
+
+        <label for="cognome">Cognome:</label>
+        <input type="text" id="cognome" th:field="*{cognome}" required>
+        <br>
+
+        <label for="dataNascita">Data di nascita:</label>
+        <input type="date" id="dataNascita" th:field="*{dataNascita}" required>
+        <br>
+
+        <label for="dataMorte">Data di morte:</label>
+        <input type="date" id="dataMorte" th:field="*{dataMorte}">
+        <br>
+
+        <label for="nazione">Nazione:</label>
+        <input type="text" id="nazione" th:field="*{nazione}">
+        <br>
+
+        <button type="submit">Salva modifiche</button>
+    </form>
+</body>
+</html>
+

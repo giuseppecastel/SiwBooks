@@ -17,3 +17,10 @@ INSERT INTO libro_autori (autori_id,libri_id) VALUES (1, 3);
 INSERT INTO libro_autori (autori_id,libri_id) VALUES (2, 2);
 INSERT INTO libro_autori (autori_id,libri_id) VALUES (2, 4);
 INSERT INTO libro_autori (autori_id,libri_id) VALUES (3, 5);
+
+-- 1. Inserisci la credenziale PRIMA (senza utente_id per ora)
+INSERT INTO utente (id, cognome, email, nome, username) VALUES (1, 'ad', 'admin@gmail.com', 'ad', 'ad');
+INSERT INTO credenziali (id, utente_id, username, ruolo,password) VALUES (1, 1, 'ad', 'ADMIN','$2a$10$Gamj/fFAilTQ7AJ8SOhC7eABzvI9Up00XKTdHj7T9WJaUfoOlfyLe');
+
+
+

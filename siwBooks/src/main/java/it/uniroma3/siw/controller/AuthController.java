@@ -8,8 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,22 +52,22 @@ public class AuthController {
 	}
 
 	@GetMapping(value = "/registrazione")
-	public String showregistrazioneForm (Model model) {
+	public String showRegisterForm (Model model) {
 		model.addAttribute("utente", new Utente());
 		model.addAttribute("credenziali", new Credenziali());
 		return "registrazione.html";
 	}
 
 	@PostMapping(value = { "/registrazione" })
-    public String registrazioneUser(@Valid @ModelAttribute("utente") Utente utente,
+    public String registerUser(@Valid @ModelAttribute("utente") Utente utente,
 		BindingResult userBindingResult,
 		@Valid @ModelAttribute("credenziali") Credenziali credenziali,
 		BindingResult credentialsBindingResult,
 		Model model) {
 
         if(!userBindingResult.hasErrors() && ! credentialsBindingResult.hasErrors()) {
-			//utente.setId(utenteService.getMaxId() + 1);
-			//credenziali.setId(credenzialiService.getMaxId() + 1);
+			utente.setId(utenteService.getMaxId() + 1);
+			credenziali.setId(credenzialiService.getMaxId() + 1);
 			credenziali.setUtente(utente);
 			utenteService.saveUtente(utente);
             credenziali.setUtente(utente);
@@ -77,15 +75,6 @@ public class AuthController {
             model.addAttribute("utente", utente);
             return "homePage.html";
         }
-        
-        for (FieldError error : userBindingResult.getFieldErrors()) {
-            System.out.println("Campo: " + error.getField() + " -> " + error.getDefaultMessage());
-        }
-        for (FieldError error : credentialsBindingResult.getFieldErrors()) {
-            System.out.println("Campo: " + error.getField() + " -> " + error.getDefaultMessage());
-        }
-
-        
         return "registrazione.html";
     }
 }

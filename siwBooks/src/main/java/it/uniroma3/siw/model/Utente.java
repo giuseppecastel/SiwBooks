@@ -13,13 +13,8 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 public class Utente {
 	
-	public static final String DEFAULT_ROLE = "DEFAULT";
-	public static final String ADMIN_ROLE = "ADMIN";
-	public static final String USER_ROLE = null;
-	
-	
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 	@NotBlank
@@ -37,8 +32,6 @@ public class Utente {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	private String ruolo;
 	
     public Long getId() {
 		return id;
@@ -86,12 +79,5 @@ public class Utente {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getRuolo() {
-		return ruolo;
-	}
-
-	public void setRuolo(String ruolo) {
-		this.ruolo = ruolo;
-	}
+	
 }

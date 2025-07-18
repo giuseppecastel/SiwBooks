@@ -29,8 +29,6 @@ body {
   display: block;   /* Evita spazi indesiderati */
 }
 
-
-
 .nav-links a,
 .nav-actions a {
   margin: 0 10px;
@@ -78,7 +76,6 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-
 /* Right side - Book info */
 .hero-right {
   flex: 1;
@@ -87,6 +84,7 @@ body {
   flex-direction: column;
   justify-content: center;
   background-color: #f4dbb6;
+  gap: 1rem; /* spazio verticale tra tutti gli elementi */
 }
 
 .hero-right h1 {
@@ -103,9 +101,17 @@ body {
   color: #555;
 }
 
-.hero-right h3{
-	margin-top: 10px;
-	color: #333;
+.hero-right h3 {
+  margin-top: 10px;
+  color: #333;
+}
+
+/* Admin buttons container */
+.hero-right > div[sec\:authorize] {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .btn-read-more {
@@ -116,7 +122,8 @@ body {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 40px;
+  margin-top: 10px;
+  text-decoration: none;
 }
 
 /* Search section */
@@ -129,16 +136,16 @@ body {
   gap: 10px;
 }
 
-.author-link{
-	font-style: italic;
-	text-decoration: none;
-	 font-weight: 600;   
-	 color: #333;
+.author-link {
+  font-style: italic;
+  text-decoration: none;
+  font-weight: 600;
+  color: #333;
 }
 
-.author-link:visited{
-	text-decoration: none;
-	color: #333;
+.author-link:visited {
+  text-decoration: none;
+  color: #333;
 }
 
 .search-bar input,
@@ -157,5 +164,6 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
+
 
 
