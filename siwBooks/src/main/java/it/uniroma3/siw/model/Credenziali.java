@@ -15,19 +15,6 @@ public class Credenziali {
     private Long id;
 	private String username;
 	private String password;
-	private String ruolo;
-	
-	public static final String DEFAULT_ROLE = "DEFAULT";
-	public static final String ADMIN_ROLE = "ADMIN";
-	
-
-	public String getRuolo() {
-		return ruolo;
-	}
-
-	public void setRuolo(String ruolo) {
-		this.ruolo = ruolo;
-	}
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Utente utente;

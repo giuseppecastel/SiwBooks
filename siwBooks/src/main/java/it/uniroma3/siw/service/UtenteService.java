@@ -28,6 +28,7 @@ public class UtenteService {
 
     @Transactional
     public Utente saveUtente(Utente utente) {
+    	utente.setRuolo(Utente.DEFAULT_ROLE);
         return this.utenteRepository.save(utente);
     }
 

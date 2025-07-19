@@ -1,5 +1,6 @@
 package it.uniroma3.siw.model;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class Libro {
         @Max(2025)
         private int anno;
         
-        private Set<String> immagini;
+        private List<String> immagini;
         
         @ManyToMany
         private Set<Autore> autori;
@@ -45,11 +46,11 @@ public class Libro {
             this.id = id;
         }
 
-		public Set<String> getImmagini() {
+		public List<String> getImmagini() {
 			return immagini;
 		}
 
-		public void setImmagine(Set<String> immagini) {
+		public void setImmagine(List<String> immagini) {
 			this.immagini = immagini;
 		}
 		

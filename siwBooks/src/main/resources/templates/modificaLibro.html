@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Modifica Libro</title>
+    <link rel="stylesheet" href="/css/modificaStyle.css" />
+</head>
+<body>
+    
+  <header class="hero">
+    <div class="logo">
+      <a href="/">
+        <img src="/images/logo.png" alt="SiwBooks Logo" />
+      </a>
+    </div>
+  </header>
+
+  <div class="main-content">
+
+    <div class="forms-wrapper">
+
+      <h1 class="forms-title">Modifica Libro:</h1>
+
+      <!-- Form modifica libro -->
+      <form th:action="@{'/admin/modificaLibro/' + ${libro.id}}" 
+            th:object="${libro}" method="post">
+        
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+          <label for="titolo">Titolo:</label>
+          <input type="text" id="titolo" th:field="*{titolo}" required>
+
+          <label for="anno">Anno:</label>
+          <input type="text" id="anno" th:field="*{anno}" required>
+
+          <label for="autori">Autori del libro:</label>
+          <select id="autori" name="autoriIds" multiple size="10">
+              <option th:each="autore : ${tuttiAutori}"
+                      th:value="${autore.id}"
+                      th:text="${autore.nome + ' ' + autore.cognome}"
+                      th:selected="${libro.autori.contains(autore)}">
+              </option>
+          </select>
+
+          <button type="submit">Salva modifiche</button>
+      </form>
+
+      <!-- Form upload foto -->
+      <section class="image-upload-section">
+          <h2>Carica Immagini del Libro</h2>
+          
+          <form th:action="@{'/admin/libro/' + ${libro.id} + '/uploadImages'}" 
+                method="post" enctype="multipart/form-data">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <input type="file" name="imageFiles" accept="image/*" multiple required />
+              <button type="submit" class="button">Carica</button>
+          </form>
+          <div>
+              <h3>Immagini attuali:</h3>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                  <div th:each="img : ${libro.immagini}">
+                      <img th:src="@{'/images/' + ${img}}" 
+                           alt="Copertina libro" 
+                           style="max-width: 150px; max-height: 200px; border: 1px solid #ccc; border-radius: 6px;" />
+                  </div>
+              </div>
+          </div>
+      </section>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
+

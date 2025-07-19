@@ -1,5 +1,5 @@
 -- Inserisci i libri con array di immagini
-INSERT INTO libro (anno, id, immagini, titolo) VALUES (1987, 1, ARRAY['norwegianwood.jpg'], 'Norwegian Wood');
+INSERT INTO libro (anno, id, immagini, titolo) VALUES (1987, 1, ARRAY['norwegianwood.jpg','nor.jpg'], 'Norwegian Wood');
 INSERT INTO libro (anno, id, immagini, titolo) VALUES (1984, 2, ARRAY['linsostenibile.jpg'], 'L''insostenibile leggerezza dell''essere');
 INSERT INTO libro (anno, id, immagini, titolo) VALUES (1994, 3, ARRAY['viti.jpg'], 'L''uccello che girava le viti del mondo');
 INSERT INTO libro (anno, id, immagini, titolo) VALUES (1997, 4, ARRAY['identita.jpg'], 'L''identità');
@@ -19,8 +19,8 @@ INSERT INTO libro_autori (autori_id,libri_id) VALUES (2, 4);
 INSERT INTO libro_autori (autori_id,libri_id) VALUES (3, 5);
 
 -- 1. Inserisci la credenziale PRIMA (senza utente_id per ora)
-INSERT INTO utente (id, cognome, email, nome, username) VALUES (1, 'ad', 'admin@gmail.com', 'ad', 'ad');
-INSERT INTO credenziali (id, utente_id, username, ruolo,password) VALUES (1, 1, 'ad', 'ADMIN','$2a$10$Gamj/fFAilTQ7AJ8SOhC7eABzvI9Up00XKTdHj7T9WJaUfoOlfyLe');
+INSERT INTO utente (id, cognome, email, nome, username, ruolo) VALUES (1, 'ad', 'admin@gmail.com', 'ad', 'ad', 'ADMIN');
+INSERT INTO credenziali (id, utente_id, username,password) VALUES (1, 1, 'ad','$2a$10$Gamj/fFAilTQ7AJ8SOhC7eABzvI9Up00XKTdHj7T9WJaUfoOlfyLe');
 
 
 

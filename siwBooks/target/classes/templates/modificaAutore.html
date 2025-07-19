@@ -3,34 +3,82 @@
 <head>
     <meta charset="UTF-8" />
     <title>Modifica Autore</title>
+    <link rel="stylesheet" href="/css/modificaStyle.css" />
 </head>
 <body>
-    <h1>Modifica Autore</h1>
-	<form th:action="@{'/admin/modificaAutore/' + ${autore.id}}" th:object="${autore}" method="post">
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+  
+  <header class="hero">
+    <div class="logo">
+      <a href="/">
+        <img src="/images/logo.png" alt="SiwBooks Logo" />
+      </a>
+    </div>
+  </header>
 
-        <label for="nome">Nome:</label>
-        <input type="text" id="nome" th:field="*{nome}" required>
-        <br>
+  <div class="main-content">
 
-        <label for="cognome">Cognome:</label>
-        <input type="text" id="cognome" th:field="*{cognome}" required>
-        <br>
+    <div class="forms-wrapper">
 
-        <label for="dataNascita">Data di nascita:</label>
-        <input type="date" id="dataNascita" th:field="*{dataNascita}" required>
-        <br>
+      <h1 class="forms-title">Modifica Autore:</h1>
 
-        <label for="dataMorte">Data di morte:</label>
-        <input type="date" id="dataMorte" th:field="*{dataMorte}">
-        <br>
+      <!-- Form modifica autore -->
+      <form th:action="@{'/admin/modificaAutore/' + ${autore.id}}" 
+            th:object="${autore}" method="post">
+        
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-        <label for="nazione">Nazione:</label>
-        <input type="text" id="nazione" th:field="*{nazione}">
-        <br>
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" th:field="*{nome}" required>
 
-        <button type="submit">Salva modifiche</button>
-    </form>
+          <label for="cognome">Cognome:</label>
+          <input type="text" id="cognome" th:field="*{cognome}" required>
+
+          <label for="dataNascita">Data di nascita:</label>
+          <input type="date" id="dataNascita" th:field="*{dataNascita}" required>
+
+          <label for="dataMorte">Data di morte:</label>
+          <input type="date" id="dataMorte" th:field="*{dataMorte}">
+
+          <label for="nazione">Nazione:</label>
+          <input type="text" id="nazione" th:field="*{nazione}">
+
+          <label for="libri">Libri scritti:</label>
+          <select id="libri" name="libriIds" multiple size="10">
+              <option th:each="libro : ${tuttiLibri}"
+                      th:value="${libro.id}"
+                      th:text="${libro.titolo}"
+                      th:selected="${autore.libri.contains(libro)}">
+              </option>
+          </select>
+
+          <button type="submit">Salva modifiche</button>
+      </form>
+
+      <hr />
+
+      <!-- Form upload foto -->
+      <section class="image-upload-section">
+          <h2>Carica Foto</h2>
+          <form th:action="@{'/admin/autore/' + ${autore.id} + '/uploadPhoto'}" 
+                method="post" enctype="multipart/form-data">
+              <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+              <input type="file" name="imageFile" accept="image/*" required />
+              <button type="submit" class="button">Carica</button>
+          </form>
+
+          <div>
+              <h3>Foto attuale:</h3>
+              <img th:if="${autore.immagine != null}" 
+                   th:src="@{'/images/' + ${autore.immagine}}" 
+                   alt="Foto autore" 
+                   style="max-width: 200px;" />
+          </div>
+      </section>
+
+    </div>
+
+  </div>
+
 </body>
 </html>
 

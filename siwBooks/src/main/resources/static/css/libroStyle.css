@@ -165,5 +165,43 @@ body {
   cursor: pointer;
 }
 
+.image-slider {
+  position: relative;
+  display: inline-block;
+}
+
+.book-img {
+  max-width: 300px;
+  max-height: 400px;
+  display: block;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: #ccc;
+  text-decoration: none;
+  padding: 0 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.arrow.left {
+  left: -40px;
+}
+
+.arrow.right {
+  right: -40px;
+}
+
+.arrow.disabled {
+  color: #333;
+  cursor: default;
+  pointer-events: none;
+}
+
+
 
 

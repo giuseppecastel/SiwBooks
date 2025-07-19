@@ -12,10 +12,10 @@ import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Utente {
-	
+
 	@Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	//@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@NotBlank
 	private String nome;
@@ -25,21 +25,26 @@ public class Utente {
 	private String email;
 	@NotBlank
 	private String username;
-	
+
+	private String ruolo;
+
+	public static final String DEFAULT_ROLE = "DEFAULT";
+	public static final String ADMIN_ROLE = "ADMIN";
+
 	public String getUsername() {
 		return username;
 	}
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-    public Long getId() {
+
+	public Long getId() {
 		return id;
 	}
-    
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credenziali_id")
-    private Credenziali credenziali;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "credenziali_id")
+	private Credenziali credenziali;
 
 	public Credenziali getCredenziali() {
 		return credenziali;
@@ -59,25 +64,31 @@ public class Utente {
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public void setName(String nome) {
 		this.nome = nome;
 	}
-	
+
 	public String getCognome() {
 		return cognome;
 	}
-	
+
 	public void setSurname(String cognome) {
 		this.cognome = cognome;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public String getRuolo() {
+		return ruolo;
+	}
+	public void setRuolo(String ruolo) {
+		this.ruolo = ruolo;
+	}
+
 }

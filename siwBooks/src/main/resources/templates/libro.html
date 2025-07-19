@@ -17,7 +17,22 @@
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-left">
-      <img th:src="@{'/images/' + ${libro.immagini[0]}}" alt="Copertina libro" class="book-img"/>
+      <div class="image-slider">
+        <!-- Freccia sinistra, disabilitata se immagineIndex == 0 -->
+		<a th:if="${immagineIndex > 0}" 
+		   th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex - 1})}" 
+		   class="arrow left">&#9664;</a>
+
+		<span th:if="${immagineIndex == 0}" class="arrow left disabled">&#9664;</span>
+
+		<img th:src="@{'/images/' + ${immagineCorrente}}" alt="Immagine Libro" class="book-img"/>
+		
+		<a th:if="${immagineIndex < numeroImmagini - 1}" 
+		   th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex + 1})}" 
+		   class="arrow right">&#9654;</a>
+
+		<span th:if="${immagineIndex == numeroImmagini - 1}" class="arrow right disabled">&#9654;</span>
+      </div>
     </div>
     <div class="hero-right">
       <div id="book-details">
