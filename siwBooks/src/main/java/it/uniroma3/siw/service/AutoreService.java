@@ -13,37 +13,49 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class AutoreService {
-		
-	    @Autowired
-	    private AutoreRepository autoreRepository;
-		
-	    public List<Autore> getAutori() {
-	        return (List<Autore>) autoreRepository.findAll();
-	    }
-	    
-	    @Transactional
-	    public void deleteById(Long id) {
-	        Autore autore = autoreRepository.findById(id)
-	            .orElseThrow(() -> new EntityNotFoundException("Autore non trovato"));
 
-	        // Rimuovi autore da ogni libro associato
-	        for (Libro libro : autore.getLibri()) {
-	            libro.getAutori().remove(autore);
-	        }
-	        // svuota la lista di libri dell'autore per sicurezza
-	        autore.getLibri().clear();
+	@Autowired
+	private AutoreRepository autoreRepository;
 
-	        // cancella l'autore
-	        autoreRepository.delete(autore);
-	    }
-	    
-	    public void save(Autore autore) {
-	    	autoreRepository.save(autore);
-	    }
-
-	    
-	    public Autore getAutoreById(Long id) {
-	        return autoreRepository.findById(id).get();
-	    }
-
+	public List<Autore> getAutori() {
+		return (List<Autore>) autoreRepository.findAll();
 	}
+
+	@Transactional
+	public void deleteById(Long id) {
+		Autore autore = autoreRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Autore non trovato"));
+
+		// Rimuovi autore da ogni libro associato
+		for (Libro libro : autore.getLibri()) {
+			libro.getAutori().remove(autore);
+		}
+		// svuota la lista di libri dell'autore per sicurezza
+		autore.getLibri().clear();
+
+		// cancella l'autore
+		autoreRepository.delete(autore);
+	}
+
+	public void save(Autore autore) {
+		autoreRepository.save(autore);
+	}
+
+
+	public Autore getAutoreById(Long id) {
+		return autoreRepository.findById(id).get();
+	}
+
+	public Long getMaxId(){
+		Long maxId = 1L;
+
+		for(Autore autore : this.getAutori()){
+			if(autore.getId() > maxId){
+				maxId = autore.getId();
+			}
+		}
+
+		return maxId;
+	}
+
+}

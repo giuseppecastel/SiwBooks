@@ -6,9 +6,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Autore;
+import it.uniroma3.siw.model.Credenziali;
 import it.uniroma3.siw.model.Libro;
+import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.service.AutoreService;
+import it.uniroma3.siw.service.CredenzialiService;
 import it.uniroma3.siw.service.LibroService;
 import jakarta.validation.Valid;
 
@@ -34,6 +39,9 @@ public class AutoreController {
 
 	@Autowired
 	private AutoreService autoreService;
+	
+	@Autowired
+	private CredenzialiService credenzialiService;
 
 	@Autowired
 	private LibroService libroService;
@@ -57,6 +65,10 @@ public class AutoreController {
 		}
 
 		model.addAttribute("autori", autoriFiltrati);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		boolean isAdmin = auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+		model.addAttribute("isAdmin", isAdmin);
 
 		// Mantieni il valore per la barra di ricerca
 		Map<String, String> param = new HashMap<>();
@@ -148,30 +160,64 @@ public class AutoreController {
 
 
 	@PostMapping("/admin/autore/{id}/uploadPhoto")
-	public String uploadAuthorPhoto(@PathVariable Long id, @RequestParam MultipartFile imageFile, Model model) throws IOException {
-		try{
-			Autore autore = autoreService.getAutoreById(id);
-			if (autore == null) {
-				return "redirect:/error";
-			}
+	public String uploadAuthorPhoto(@PathVariable Long id,
+	                                @RequestParam(value = "imageFile", required = false) MultipartFile imageFile,
+	                                Model model) throws IOException {
+	    try {
+	        Autore autore = autoreService.getAutoreById(id);
+	        if (autore == null) {
+	            return "redirect:/error";
+	        }
 
-			String uploadDir = "src/main/resources/static/images/";
-			String contentType = imageFile.getContentType();
-			if(contentType != null) {
-				if (contentType.contains("image/")) {
-					String fileName = imageFile.getOriginalFilename();
-					Path filePath = Path.of(uploadDir, fileName);
-					Files.createDirectories(filePath.getParent());
-					Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+	        String uploadDir = "src/main/resources/static/images/";
 
-					autore.setImmagine(fileName);
-					autoreService.save(autore);
-				}
-			}
-			return "redirect:/admin/modificaAutore/" + id;
-		}
-		catch(Exception e){
-			return "redirect:/error";
-		}
+	        if (imageFile == null || imageFile.getSize() == 0 || imageFile.isEmpty()) {
+	            System.out.println("Nessuna immagine caricata. Imposto default.jpg");
+	            autore.setImmagine("default.jpg");
+	        } else {
+	            String contentType = imageFile.getContentType();
+	            if (contentType != null && contentType.contains("image/")) {
+	                String fileName = imageFile.getOriginalFilename();
+	                Path filePath = Path.of(uploadDir, fileName);
+	                Files.createDirectories(filePath.getParent());
+	                Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+
+	                autore.setImmagine(fileName);
+	            } else {
+	                System.out.println("Tipo file non valido: " + contentType);
+	                autore.setImmagine("default.jpg");
+	            }
+	        }
+
+	        autoreService.save(autore);
+	        return "redirect:/admin/modificaAutore/" + id;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "redirect:/error";
+	    }
 	}
+
+
+	@GetMapping("/admin/formNuovoAutore")
+	public String formNuovoAutore(Model model) {
+	    model.addAttribute("autore", new Autore());  // nuovo autore vuoto senza id
+	    return "formNuovoAutore.html";
+	}
+
+	@PostMapping("/admin/nuovoAutore")
+	public String salvaNuovoAutore(@Valid @ModelAttribute("autore") Autore autore,
+	                               BindingResult bindingResult,
+	                               Model model) {
+	    if (bindingResult.hasErrors()) {
+	        return "formNuovoAutore.html";
+	    }
+	    
+	    // Imposta manualmente l'id, se serve (simile a come fai con libro)
+	    autore.setId(autoreService.getMaxId() + 1);
+	    
+	    autoreService.save(autore);
+	    return "redirect:/admin/modificaAutore/" + autore.getId(); // o altra pagina dopo il salvataggio
+	}
+
 }

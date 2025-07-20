@@ -6,16 +6,16 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,6 +56,10 @@ public class LibroController {
 		}
 
 		model.addAttribute("libri", libriFiltrati);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		boolean isAdmin = auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+		model.addAttribute("isAdmin", isAdmin);
 
 		// Per mantenere il valore nel campo input (es. barra di ricerca)
 		Map<String, String> param = new HashMap<>();
@@ -64,7 +68,6 @@ public class LibroController {
 
 		return "libri.html";
 	}
-	
 	@GetMapping("/libro/{id}")
 	public String getLibro(
 	        @PathVariable("id") Long id,
@@ -73,16 +76,21 @@ public class LibroController {
 
 	    Libro libro = this.libroService.getLibroById(id);
 	    if (libro == null) {
-	        return "redirect:/error";  // o altra gestione errore
+	        return "redirect:/error";
 	    }
 
 	    List<String> immagini = libro.getImmagini();
-	    int numeroImmagini = immagini.size();
+	    String immagineCorrente = null;
+	    int numeroImmagini = 0;
 
-	    if (immagineIndex < 0) immagineIndex = 0;
-	    if (immagineIndex >= numeroImmagini) immagineIndex = numeroImmagini - 1;
+	    if (immagini != null && !immagini.isEmpty()) {
+	        numeroImmagini = immagini.size();
 
-	    String immagineCorrente = immagini.get(immagineIndex);
+	        if (immagineIndex < 0) immagineIndex = 0;
+	        if (immagineIndex >= numeroImmagini) immagineIndex = numeroImmagini - 1;
+
+	        immagineCorrente = immagini.get(immagineIndex);
+	    }
 
 	    model.addAttribute("libro", libro);
 	    model.addAttribute("immagineCorrente", immagineCorrente);
@@ -93,9 +101,9 @@ public class LibroController {
 	    boolean isAdmin = auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
 	    model.addAttribute("isAdmin", isAdmin);
 
-	    // Qui non fai redirect ma ritorni la view con i dati:
 	    return "libro";
 	}
+
 
 
 
@@ -195,6 +203,10 @@ public class LibroController {
 	                }
 	            }
 	        }
+	        
+	        if (immagini.isEmpty()) {
+	            immagini.add("default.jpg");
+	        }
 
 	        libro.setImmagine(immagini);
 	        libroService.save(libro);
@@ -205,7 +217,41 @@ public class LibroController {
 	        return "redirect:/error";
 	    }
 	}
+	
+	@GetMapping("/admin/formNuovoLibro")
+	public String formNuovoLibro(Model model) {
+	    model.addAttribute("libro", new Libro());  // nuovo libro vuoto senza id
+	    model.addAttribute("tuttiAutori", autoreService.getAutori());
+	    return "formNuovoLibro.html";
+	}
 
+	
+	@PostMapping("/admin/nuovoLibro")
+	public String salvaNuovoLibro(@Valid @ModelAttribute("libro") Libro libro,
+	                              BindingResult bindingResult,
+	                              @RequestParam(required = false) List<Long> autoriIds,
+	                              Model model) {
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("tuttiAutori", autoreService.getAutori());
+	        return "formNuovoLibro.html";
+	    }
+
+	    if (autoriIds != null) {
+	        Set<Autore> autori = new HashSet<>();
+	        for (Long autoreId : autoriIds) {
+	            Autore autore = autoreService.getAutoreById(autoreId);
+	            if (autore != null) {
+	                autori.add(autore);
+	            }
+	        }
+	        libro.setAutori(autori);
+	    }
+	    
+	   libro.setId(libroService.getMaxId()+1);
+
+	    libroService.save(libro);
+	    return "redirect:/admin/modificaLibro/" + libro.getId(); // o altra pagina dopo il salvataggio
+	}
 
 }
 

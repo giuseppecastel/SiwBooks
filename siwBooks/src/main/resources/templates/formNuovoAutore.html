@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Aggiungi Autore</title>
+    <link rel="stylesheet" href="/css/modificaStyle.css" />
+</head>
+<body>
+    
+  <header class="hero">
+    <div class="logo">
+      <a href="/">
+        <img src="/images/logo.png" alt="SiwBooks Logo" />
+      </a>
+    </div>
+  </header>
+
+  <div class="main-content">
+
+    <div class="forms-wrapper">
+
+      <h1 class="forms-title">Aggiungi Nuovo Autore:</h1>
+
+      <!-- Form aggiunta autore -->
+      <form th:action="@{/admin/nuovoAutore}" th:object="${autore}" method="post">
+        
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" th:field="*{nome}" required>
+
+          <label for="cognome">Cognome:</label>
+          <input type="text" id="cognome" th:field="*{cognome}" required>
+
+          <label for="dataNascita">Data di Nascita:</label>
+          <input type="date" id="dataNascita" th:field="*{dataNascita}" required>
+
+          <label for="dataMorte">Data di Morte:</label>
+          <input type="date" id="dataMorte" th:field="*{dataMorte}">
+
+          <label for="nazione">Nazione:</label>
+          <input type="text" id="nazione" th:field="*{nazione}">
+
+          <button type="submit">Aggiungi Autore</button>
+      </form>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

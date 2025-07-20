@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SiwBooks - Libro</title>
-<link rel="stylesheet" href="/css/libroStyle.css" /></head>
+  <link rel="stylesheet" href="/css/libroStyle.css" />
+</head>
 <body>
   <!-- Navbar -->
-  <!-- index.html -->
   <header class="navbar">
-	<a href="/" class="logo-button">
-	  <img src="/images/logo.png" alt="SiwBooks Logo" class="logo-img"/>
-	</a>
+    <a href="/" class="logo-button">
+      <img src="/images/logo.png" alt="SiwBooks Logo" class="logo-img"/>
+    </a>
   </header>
   
   <!-- Hero Section -->
@@ -19,21 +19,32 @@
     <div class="hero-left">
       <div class="image-slider">
         <!-- Freccia sinistra, disabilitata se immagineIndex == 0 -->
-		<a th:if="${immagineIndex > 0}" 
-		   th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex - 1})}" 
-		   class="arrow left">&#9664;</a>
+        <a th:if="${immagineCorrente != null and immagineIndex > 0}" 
+           th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex - 1})}" 
+           class="arrow left">&#9664;</a>
+		   
+        <span th:if="${immagineCorrente == null or immagineIndex == 0}" class="arrow left disabled">&#9664;</span>
 
-		<span th:if="${immagineIndex == 0}" class="arrow left disabled">&#9664;</span>
+        <!-- Immagine principale o di default -->
+        <img th:if="${immagineCorrente != null}" 
+             th:src="@{'/images/' + ${immagineCorrente}}" 
+             alt="Immagine Libro" 
+             class="book-img"/>
 
-		<img th:src="@{'/images/' + ${immagineCorrente}}" alt="Immagine Libro" class="book-img"/>
-		
-		<a th:if="${immagineIndex < numeroImmagini - 1}" 
-		   th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex + 1})}" 
-		   class="arrow right">&#9654;</a>
+        <img th:if="${immagineCorrente == null}" 
+             src="/images/default.jpg" 
+             alt="Nessuna immagine disponibile" 
+             class="book-img"/>
 
-		<span th:if="${immagineIndex == numeroImmagini - 1}" class="arrow right disabled">&#9654;</span>
+        <!-- Freccia destra -->
+        <a th:if="${immagineCorrente != null and immagineIndex < numeroImmagini - 1}" 
+           th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex + 1})}" 
+           class="arrow right">&#9654;</a>
+
+        <span th:if="${immagineCorrente == null or immagineIndex == numeroImmagini - 1}" class="arrow right disabled">&#9654;</span>
       </div>
     </div>
+
     <div class="hero-right">
       <div id="book-details">
         <h1 th:text="${libro.titolo}">Titolo del Libro</h1>
@@ -41,22 +52,20 @@
         <ul>
           <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
           <li th:each="autore : ${libro.autori}" th:unless="${#lists.isEmpty(libro.autori)}">
-            <a th:href="@{/autore/{id}(id=${autore.id})}" th:text="${autore.nome + ' ' + autore.cognome}" class="author-link"></a>
+            <a th:href="@{/autore/{id}(id=${autore.id})}" 
+               th:text="${autore.nome + ' ' + autore.cognome}" 
+               class="author-link"></a>
           </li>
         </ul>
       </div> <!-- fine book-details -->
-      
-	  <div th:if="${isAdmin}">
-	    <a th:href="@{'/admin/modificaLibro/' + ${libro.id}}" class="btn-read-more">Modifica</a>
-	    <a th:href="@{'/admin/cancellaLibro/' + ${libro.id}}" class="btn-read-more">Cancella</a>
-	  </div>
 
-		
+      <div th:if="${isAdmin}">
+        <a th:href="@{'/admin/modificaLibro/' + ${libro.id}}" class="btn-read-more">Modifica</a>
+        <a th:href="@{'/admin/cancellaLibro/' + ${libro.id}}" class="btn-read-more">Cancella</a>
       </div>
     </div> <!-- fine hero-right -->
   </section>
- 
-
+  
   <!-- Search Section -->
   <section class="search-bar">
     <input type="text" placeholder="Type to search product and hit enter" />
@@ -70,4 +79,5 @@
   </section>
 </body>
 </html>
+
 

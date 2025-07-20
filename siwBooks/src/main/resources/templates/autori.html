@@ -31,7 +31,12 @@
 	    <button class="card-button">
 	      <div class="card-image">
 	        <a th:href="@{'/autore/' + ${autore.id}}">
-	          <img th:each="img : ${autore.immagine}" th:src="@{'/images/' + ${img}}" alt="Immagine Autore" />
+	          <img th:if="${autore.immagine != null and autore.immagine != ''}" 
+	               th:src="@{'/images/' + ${autore.immagine}}" 
+	               alt="Immagine Autore" />
+	          <img th:if="${autore.immagine == null or autore.immagine == ''}" 
+	               src="/images/default.jpg" 
+	               alt="Immagine Default" />
 	        </a>
 	      </div>
 	      <div class="card-content">
@@ -39,10 +44,11 @@
 	      </div>
 	    </button>
 	  </div>
+
 	  
       <!-- Card "+" visibile solo per admin -->
       <div class="card add-card" th:if="${isAdmin}">
-        <a th:href="@{'/admin/formPerNuovoAutore'}" class="card-button add-card-button">
+        <a th:href="@{'/admin/formNuovoAutore'}" class="card-button add-card-button">
           <span class="plus-symbol">+</span>
         </a>
       </div>
