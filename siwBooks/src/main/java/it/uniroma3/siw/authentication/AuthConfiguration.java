@@ -42,6 +42,8 @@ public class AuthConfiguration {
 			.requestMatchers(HttpMethod.GET, "/logo.png").permitAll()
 			.requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority(Utente.ADMIN_ROLE)
 			.requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority(Utente.ADMIN_ROLE)
+			.requestMatchers(HttpMethod.GET, "/default/**").hasAuthority(Utente.DEFAULT_ROLE)
+			.requestMatchers(HttpMethod.POST, "/default/**").hasAuthority(Utente.DEFAULT_ROLE)
 			.requestMatchers(HttpMethod.GET, "/logo.png").permitAll()
 			.requestMatchers(HttpMethod.GET, "/favicon.ico").permitAll()
 			.requestMatchers(HttpMethod.POST, "/login", "/registrazione").permitAll()

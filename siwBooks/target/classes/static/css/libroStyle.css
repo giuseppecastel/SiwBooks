@@ -202,6 +202,53 @@ body {
   pointer-events: none;
 }
 
+.recensioni-section {
+  padding: 2em;
+  background-color: #d44b53;
+}
+
+.recensioni-section h2 {
+  font-size: 2em;
+  margin-bottom: 1em;
+  color: white;
+}
+
+.recensioni-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.recensione-box {
+  background-color: #f4dbb6;
+  border: 1px solid #ddd;
+  color: #173534;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.1);
+}
+
+.add-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px #999;
+  cursor: pointer;
+  text-align: center;
+  padding: 1rem;
+}
+
+.add-recensione-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.add-symbol {
+  font-size: 2rem;
+  font-weight: bold;
+  display: block;
+}
+
 
 
 

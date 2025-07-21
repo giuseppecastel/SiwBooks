@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -13,16 +13,15 @@
       <img src="/images/logo.png" alt="SiwBooks Logo" class="logo-img"/>
     </a>
   </header>
-  
+
   <!-- Hero Section -->
   <section class="hero">
     <div class="hero-left">
       <div class="image-slider">
-        <!-- Freccia sinistra, disabilitata se immagineIndex == 0 -->
+        <!-- Freccia sinistra -->
         <a th:if="${immagineCorrente != null and immagineIndex > 0}" 
            th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex - 1})}" 
            class="arrow left">&#9664;</a>
-		   
         <span th:if="${immagineCorrente == null or immagineIndex == 0}" class="arrow left disabled">&#9664;</span>
 
         <!-- Immagine principale o di default -->
@@ -30,7 +29,6 @@
              th:src="@{'/images/' + ${immagineCorrente}}" 
              alt="Immagine Libro" 
              class="book-img"/>
-
         <img th:if="${immagineCorrente == null}" 
              src="/images/default.jpg" 
              alt="Nessuna immagine disponibile" 
@@ -40,14 +38,13 @@
         <a th:if="${immagineCorrente != null and immagineIndex < numeroImmagini - 1}" 
            th:href="@{/libro/{id}(id=${libro.id}, immagineIndex=${immagineIndex + 1})}" 
            class="arrow right">&#9654;</a>
-
         <span th:if="${immagineCorrente == null or immagineIndex == numeroImmagini - 1}" class="arrow right disabled">&#9654;</span>
       </div>
     </div>
 
     <div class="hero-right">
       <div id="book-details">
-        <h1 th:text="${libro.titolo}">Titolo del Libro</h1>
+        <h1 th:text="${libro.titolo + ' (' + libro.anno + ')'}">Titolo (Anno)</h1>
         <h3>Lista Autori:</h3>
         <ul>
           <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
@@ -57,27 +54,47 @@
                class="author-link"></a>
           </li>
         </ul>
-      </div> <!-- fine book-details -->
+      </div>
 
       <div th:if="${isAdmin}">
         <a th:href="@{'/admin/modificaLibro/' + ${libro.id}}" class="btn-read-more">Modifica</a>
         <a th:href="@{'/admin/cancellaLibro/' + ${libro.id}}" class="btn-read-more">Cancella</a>
       </div>
-    </div> <!-- fine hero-right -->
+    </div>
   </section>
-  
-  <!-- Search Section -->
-  <section class="search-bar">
-    <input type="text" placeholder="Type to search product and hit enter" />
-    <select>
-      <option>Browse a category</option>
-      <option>Fiction</option>
-      <option>Biography</option>
-      <option>Science</option>
-    </select>
-    <button class="search-btn">🔍</button>
+
+  <!-- Recensioni Section -->
+  <section class="recensioni-section">
+    <h2>Recensioni</h2>
+
+    <div class="recensioni-container">
+      <!-- Recensioni esistenti -->
+      <div class="recensione-box" th:each="recensione : ${recensioni}">
+        <h3 th:text="${recensione.titolo}">Titolo recensione</h3>
+        <p th:text="${recensione.testo}">Testo della recensione</p>
+        <span th:text="'Voto: ' + ${recensione.voto} + ' / 5'">Voto: 4 / 5</span><br/>
+
+        <small>
+          <span th:text="'Scritto da: ' + ${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Autore</span>
+		  <span th:if="${recensione.utente.id == currentUserId}">
+		    <a th:href="@{'/default/modificaRecensione/' + ${recensione.id}}" title="Modifica">✏️</a>
+		    <form th:action="@{'/default/cancellaRecensione/' + ${recensione.id}}" method="post" style="display:inline;">
+		      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		      <button type="submit" title="Cancella">🗑️</button>
+		    </form>
+		  </span>
+        </small>
+      </div>
+
+      <!-- Card "Aggiungi recensione" solo per utenti DEFAULT -->
+      <div class="recensione-box add-box" th:if="${isDefault}">
+        <a th:href="@{'/default/formNuovaRecensione'(libroId=${libro.id})}" class="add-recensione-link">
+          <span class="add-symbol">+</span>
+          <p>Aggiungi recensione</p>
+        </a>
+      </div>
+    </div>
   </section>
 </body>
 </html>
-
 

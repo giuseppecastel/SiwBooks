@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,8 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.model.Autore;
 import it.uniroma3.siw.model.Libro;
+import it.uniroma3.siw.model.Recensione;
+import it.uniroma3.siw.model.Utente;
 import it.uniroma3.siw.service.AutoreService;
 import it.uniroma3.siw.service.LibroService;
+import it.uniroma3.siw.service.RecensioneService;
+import it.uniroma3.siw.service.UtenteService;
 import jakarta.validation.Valid;
 
 @Controller
@@ -40,6 +45,12 @@ public class LibroController {
 	
 	@Autowired
 	private AutoreService autoreService;
+	
+	@Autowired
+	private UtenteService utenteService;
+	
+	@Autowired
+	private RecensioneService recensioneService;
 
 	@GetMapping("/libri")
 	public String mostraLibri(@RequestParam(required = false) String titolo, Model model) {
@@ -68,6 +79,7 @@ public class LibroController {
 
 		return "libri.html";
 	}
+	
 	@GetMapping("/libro/{id}")
 	public String getLibro(
 	        @PathVariable("id") Long id,
@@ -92,19 +104,32 @@ public class LibroController {
 	        immagineCorrente = immagini.get(immagineIndex);
 	    }
 
+	    List<Recensione> recensioni = recensioneService.findByLibro(libro);
+	    model.addAttribute("recensioni", recensioni);
+
 	    model.addAttribute("libro", libro);
 	    model.addAttribute("immagineCorrente", immagineCorrente);
 	    model.addAttribute("immagineIndex", immagineIndex);
 	    model.addAttribute("numeroImmagini", numeroImmagini);
 
 	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
 	    boolean isAdmin = auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+	    boolean isDefault = auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("DEFAULT"));
+
 	    model.addAttribute("isAdmin", isAdmin);
+	    model.addAttribute("isDefault", isDefault);
+
+	    // Aggiungi ID dell'utente loggato se presente
+	    if (auth != null && auth.isAuthenticated()) {
+	        Utente utente = utenteService.findByUsername(auth.getName());
+	        if (utente != null) {
+	            model.addAttribute("currentUserId", utente.getId());
+	        }
+	    }
 
 	    return "libro";
 	}
-
-
 
 
 	@GetMapping("/admin/cancellaLibro/{id}")
@@ -252,6 +277,131 @@ public class LibroController {
 	    libroService.save(libro);
 	    return "redirect:/admin/modificaLibro/" + libro.getId(); // o altra pagina dopo il salvataggio
 	}
+	
+	@GetMapping("/default/formNuovaRecensione")
+    public String mostraFormNuovaRecensione(@RequestParam("libroId") Long libroId, Model model) {
+        Libro libro = libroService.getLibroById(libroId);
+        if (libro == null) {
+            return "redirect:/error";
+        }
+
+        Recensione recensione = new Recensione();
+        recensione.setLibro(libro);
+
+        model.addAttribute("recensione", recensione);
+        model.addAttribute("libro", libro);
+
+        return "formNuovaRecensione";  // nome del template senza .html
+    }
+
+	@PostMapping("/default/nuovaRecensione")
+	public String salvaRecensione(@ModelAttribute("recensione") Recensione recensione, BindingResult result, Model model) {
+	    if (result.hasErrors()) {
+	        model.addAttribute("libro", recensione.getLibro());
+	        return "formNuovaRecensione";
+	    }
+
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null && auth.isAuthenticated()) {
+	        String username = auth.getName();
+	        Utente utente = utenteService.findByUsername(username);
+	        recensione.setUtente(utente);
+	    }
+
+	    if (recensione.getId() == null) {
+	        Long maxId = recensioneService.getMaxId();
+	        recensione.setId((maxId != null ? maxId : 0L) + 1);
+	    }
+
+	    recensioneService.save(recensione);
+
+	    return "redirect:/libro/" + recensione.getLibro().getId();
+	}
+	
+	@PostMapping("/default/cancellaRecensione/{id}")
+	public String cancellaRecensione(@PathVariable("id") Long id, Principal principal, Model model) {
+	    Recensione recensione = recensioneService.getRecensioneById(id);
+
+	    if (recensione == null) {
+	        return "redirect:/";
+	    }
+
+	    // Controllo che l'utente loggato sia l'autore della recensione
+	    Utente utenteLoggato = utenteService.findByUsername(principal.getName());
+	    if (!recensione.getUtente().getId().equals(utenteLoggato.getId())) {
+	        return "redirect:/accessoNegato";
+	    }
+
+	    Long libroId = recensione.getLibro().getId();
+	    recensioneService.deleteById(recensione.getId());
+	    return "redirect:/libro/" + libroId;
+	}
+	
+	@GetMapping("/default/modificaRecensione/{id}")
+	public String mostraFormModificaRecensione(@PathVariable("id") Long id, Model model) {
+	    Recensione recensione = recensioneService.getRecensioneById(id);
+	    if (recensione == null) {
+	        return "redirect:/error";
+	    }
+
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth == null || !auth.isAuthenticated()) {
+	        return "redirect:/login";
+	    }
+
+	    Utente utente = utenteService.findByUsername(auth.getName());
+	    if (utente == null) {
+	        return "redirect:/login";  // Oppure una pagina di errore custom
+	    }
+
+	    if (!recensione.getUtente().getId().equals(utente.getId())) {
+	        return "redirect:/accessoNegato";  // Protegge da accessi non autorizzati
+	    }
+
+	    model.addAttribute("recensione", recensione);
+	    model.addAttribute("libro", recensione.getLibro());
+
+	    return "modificaRecensione.html";
+	}
+
+
+	@PostMapping("/default/modificaRecensione/{id}")
+	public String salvaModificaRecensione(@PathVariable("id") Long id,
+	                                      @ModelAttribute("recensione") @Valid Recensione recensioneModificata,
+	                                      BindingResult bindingResult,
+	                                      Model model) {
+	    Recensione recensioneEsistente = recensioneService.getRecensioneById(id);
+	    if (recensioneEsistente == null) {
+	        return "redirect:/error";
+	    }
+
+	    // Controllo utente loggato come sopra
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth == null || !auth.isAuthenticated()) {
+	        return "redirect:/login";
+	    }
+	    Utente utente = utenteService.findByUsername(auth.getName());
+	    if (!recensioneEsistente.getUtente().getId().equals(utente.getId())) {
+	        return "redirect:/accessoNegato";
+	    }
+
+	    if (bindingResult.hasErrors()) {
+	        model.addAttribute("libro", recensioneEsistente.getLibro());
+	        return "modificaRecensione";
+	    }
+
+	    // Aggiorna i campi modificabili
+	    recensioneEsistente.setTitolo(recensioneModificata.getTitolo());
+	    recensioneEsistente.setTesto(recensioneModificata.getTesto());
+	    recensioneEsistente.setVoto(recensioneModificata.getVoto());
+
+	    recensioneService.save(recensioneEsistente);
+
+	    return "redirect:/libro/" + recensioneEsistente.getLibro().getId();
+	}
+
+
+
 
 }
 
