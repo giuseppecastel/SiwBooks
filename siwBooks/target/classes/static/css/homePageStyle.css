@@ -103,7 +103,7 @@ button:hover {
 
 .book-card {
   background-color: #d44b53;
-  color: white;
+  color: #f4dbb6;
   padding: 1.5rem;
   width: 280px;
   box-shadow: 8px 8px 0 #173534;
@@ -111,7 +111,9 @@ button:hover {
   flex-direction: column;
   align-items: center;
   border-radius: 12px;
+  height: 100%; /* oppure imposta una altezza fissa */
 }
+
 
 .book-image img {
   width: 100%;
@@ -120,39 +122,32 @@ button:hover {
   margin-bottom: 1rem;
 }
 
-.book-info h2 {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-  text-align: center;
+.book-info {
+	text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
 }
 
-.book-info p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.book-info p {
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
 
 .book-info .cta-button {
-  background-color: white;
-  color: #173534;
+  background-color: #173534;
+  color: #f4dbb6;
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   text-decoration: none;
-  text-align: center;
+  margin-top: auto; /* Spinge il bottone in fondo */
 }
 
+
 .book-info .cta-button:hover {
-  background-color: #173534;
-  color: white;
+  background-color: #f4dbb6;
+  color: #173534;
 }
 
 
@@ -170,7 +165,7 @@ button:hover {
   display: flex;
   justify-content: space-around;
   background-color: #d44b53;
-  color: white;
+  color: #f4dbb6;
   padding: 2rem;
 }
 
