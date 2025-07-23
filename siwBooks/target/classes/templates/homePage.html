@@ -7,51 +7,61 @@
   <link rel="stylesheet" href="/css/homePageStyle.css" />
 </head>
 <body>
-	<header class="navbar">
-		<div class="navbar-left">
-		  <a href="/libri"><button>Libri</button></a>
-		  <a href="/autori"><button>Autori</button></a>
-		</div>
-	  <div class="navbar-center">
-	    <img src="/images/logo.png" alt="Logo" class="logo"/>
-	  </div>
-	  
-	  <div class="navbar-right">
-		<a th:if="${username}" th:text="${username}"></a>
-			<form th:if="${username}" th:action="@{/logout}" method="post">
-			  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-			  <button type="submit" class="logout-button">Logout</button>
-			</form>
-		      <a th:unless="${username}" href="/login"><button>Login</button></a>
-		
-			  <a th:if="${username==NULL}" href="/registrazione">
-			      <button>Registrati</button></a>
-	  </div>
-	</header>
-
-
-  <main class="hero">
-    <div class="hero-text">
-      <h1>A Leader in Solar</h1>
-      <p>Industry-leading products and customer service worldwide, with a demonstrated commitment to sustainability.</p>
-      <p class="image-credit">Image from <a href="https://www.freepik.com" target="_blank">Freepik</a></p>
-      <button class="cta-button">Contact Us</button>
+  <header class="navbar">
+    <div class="navbar-left">
+      <a href="/libri"><button>Libri</button></a>
+      <a href="/autori"><button>Autori</button></a>
     </div>
-    <div class="hero-image"></div>
-  </main>
 
+    <div class="navbar-center">
+      <img src="/images/logo.png" alt="Logo" class="logo" />
+    </div>
+
+    <div class="navbar-right">
+      <span th:if="${username}" th:text="${username}"></span>
+
+      <form th:if="${username}" th:action="@{/logout}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit" class="logout-button">Logout</button>
+      </form>
+
+      <a th:unless="${username}" href="/login"><button>Login</button></a>
+      <a th:unless="${username}" href="/registrazione"><button>Registrati</button></a>
+    </div>
+  </header>
+
+  <main class="hero-books">
+    <div class="books-wrapper">
+      <div th:each="libro : ${libriCasuali}" class="book-card">
+        <div class="book-image">
+			<div th:if="${libro.immagini != null and !#lists.isEmpty(libro.immagini)}">
+			                <img th:src="@{'/images/' + ${libro.immagini[0]}}" alt="Immagine Libro" />
+			              </div>
+			              <div th:unless="${libro.immagini != null and !#lists.isEmpty(libro.immagini)}">
+			                <img src="/images/default.jpg" alt="Immagine di default" />
+			              </div>
+        </div>
+        <div class="book-info">
+          <h2 th:text="${libro.titolo}">Titolo Libro</h2>
+          <p th:text="'Anno: ' + ${libro.anno}">Anno pubblicazione</p>
+          <a th:href="@{'/libro/' + ${libro.id}}" class="cta-button">Scopri di più</a>
+        </div>
+      </div>
+    </div>
+  </main>
+  
   <section class="info-section">
     <div class="info-box">
-      <h3>Why Solar</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <h3>Scopri nuovi libri</h3>
+      <p>Esplora una vasta raccolta di titoli e autori selezionati con cura per ogni gusto letterario.</p>
     </div>
     <div class="info-box">
-      <h3>How it works</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <h3>Condividi le tue recensioni</h3>
+      <p>Partecipa alla community lasciando la tua opinione sui libri che leggi.</p>
     </div>
     <div class="info-box">
-      <h3>Benefits</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      <h3>Perché scegliere SiwBooks</h3>
+      <p>Un’interfaccia semplice, contenuti curati e una piattaforma sempre in crescita.</p>
     </div>
   </section>
 </body>
