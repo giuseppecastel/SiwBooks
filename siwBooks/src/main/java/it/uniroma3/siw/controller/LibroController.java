@@ -329,7 +329,7 @@ public class LibroController {
 
 	    // Controllo che l'utente loggato sia l'autore della recensione
 	    Utente utenteLoggato = utenteService.findByUsername(principal.getName());
-	    if (!recensione.getUtente().getId().equals(utenteLoggato.getId())) {
+	    if (!recensione.getUtente().getId().equals(utenteLoggato.getId()) && !utenteLoggato.getRuolo().equals(Utente.ADMIN_ROLE)) {
 	        return "redirect:/accessoNegato";
 	    }
 
@@ -339,7 +339,7 @@ public class LibroController {
 	}
 	
 	@GetMapping("/default/modificaRecensione/{id}")
-	public String mostraFormModificaRecensione(@PathVariable("id") Long id, Model model) {
+	public String mostraFormModificaRecensione(@PathVariable("id") Long id,Principal principal, Model model) {
 	    Recensione recensione = recensioneService.getRecensioneById(id);
 	    if (recensione == null) {
 	        return "redirect:/error";
@@ -355,8 +355,9 @@ public class LibroController {
 	        return "redirect:/login";  // Oppure una pagina di errore custom
 	    }
 
-	    if (!recensione.getUtente().getId().equals(utente.getId())) {
-	        return "redirect:/accessoNegato";  // Protegge da accessi non autorizzati
+	    Utente utenteLoggato = utenteService.findByUsername(principal.getName());
+	    if (!recensione.getUtente().getId().equals(utenteLoggato.getId()) && !utenteLoggato.getRuolo().equals(Utente.ADMIN_ROLE)) {
+	        return "redirect:/accessoNegato";
 	    }
 
 	    model.addAttribute("recensione", recensione);
@@ -382,7 +383,7 @@ public class LibroController {
 	        return "redirect:/login";
 	    }
 	    Utente utente = utenteService.findByUsername(auth.getName());
-	    if (!recensioneEsistente.getUtente().getId().equals(utente.getId())) {
+	    if (!recensioneEsistente.getUtente().getId().equals(utente.getId()) && !utente.getRuolo().equals(utente.ADMIN_ROLE)) {
 	        return "redirect:/accessoNegato";
 	    }
 
@@ -401,8 +402,5 @@ public class LibroController {
 	    return "redirect:/libro/" + recensioneEsistente.getLibro().getId();
 	}
 	
-
-
-
 }
 

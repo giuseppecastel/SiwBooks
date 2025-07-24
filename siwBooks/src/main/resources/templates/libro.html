@@ -48,7 +48,7 @@
         <h3>Lista Autori:</h3>
         <ul>
           <li th:if="${#lists.isEmpty(libro.autori)}">Nessun autore</li>
-          <li th:each="autore : ${libro.autori}" th:unless="${#lists.isEmpty(libro.autori)}">
+          <li th:each="autore : ${libro.autori}">
             <a th:href="@{/autore/{id}(id=${autore.id})}" 
                th:text="${autore.nome + ' ' + autore.cognome}" 
                class="author-link"></a>
@@ -76,7 +76,7 @@
 
         <small>
           <span th:text="'Scritto da: ' + ${recensione.utente.nome} + ' ' + ${recensione.utente.cognome}">Autore</span>
-		  <span th:if="${recensione.utente.id == currentUserId}">
+		  <span th:if="${recensione.utente.id == currentUserId || isAdmin}">
 		    <a th:href="@{'/default/modificaRecensione/' + ${recensione.id}}" title="Modifica">✏️</a>
 		    <form th:action="@{'/default/cancellaRecensione/' + ${recensione.id}}" method="post" style="display:inline;">
 		      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -87,7 +87,7 @@
       </div>
 
       <!-- Card "Aggiungi recensione" solo per utenti DEFAULT -->
-      <div class="recensione-box add-box" th:if="${isDefault}">
+      <div class="recensione-box add-box" th:if="${isDefault || isAdmin}">
         <a th:href="@{'/default/formNuovaRecensione'(libroId=${libro.id})}" class="add-recensione-link">
           <span class="add-symbol">+</span>
           <p>Aggiungi recensione</p>

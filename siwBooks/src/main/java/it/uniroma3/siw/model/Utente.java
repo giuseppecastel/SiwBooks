@@ -1,11 +1,15 @@
 package it.uniroma3.siw.model;
 
+import java.util.List;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -27,6 +31,16 @@ public class Utente {
 	private String username;
 
 	private String ruolo;
+	
+	@OneToMany(mappedBy = "utente", fetch = FetchType.EAGER)
+	private List<Recensione> recensioni;
+
+	public List<Recensione> getRecensioni() {
+		return recensioni;
+	}
+	public void setRecensioni(List<Recensione> recensioni) {
+		this.recensioni = recensioni;
+	}
 
 	public static final String DEFAULT_ROLE = "DEFAULT";
 	public static final String ADMIN_ROLE = "ADMIN";

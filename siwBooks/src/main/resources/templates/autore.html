@@ -38,7 +38,7 @@
         <h3>Lista Libri:</h3>
         <ul>
           <li th:if="${#lists.isEmpty(autore.libri)}">Nessun libro</li>
-          <li th:each="libro : ${autore.libri}" th:unless="${#lists.isEmpty(autore.libri)}">
+          <li th:each="libro : ${autore.libri}">
             <a th:href="@{/libro/{id}(id=${libro.id})}" th:text="${libro.titolo}" class="author-link"></a>
           </li>
         </ul>
@@ -49,18 +49,6 @@
         <a th:href="@{'/admin/cancellaAutore/' + ${autore.id}}" class="btn-read-more">Cancella</a>
       </div>
     </div>
-  </section>
-
-  <!-- Search Section -->
-  <section class="search-bar">
-    <input type="text" placeholder="Type to search product and hit enter" />
-    <select>
-      <option>Browse a category</option>
-      <option>Fiction</option>
-      <option>Biography</option>
-      <option>Science</option>
-    </select>
-    <button class="search-btn">🔍</button>
   </section>
 </body>
 </html>

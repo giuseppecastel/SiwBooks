@@ -28,7 +28,7 @@ public class Recensione {
     private String testo;
 
     @ManyToOne
-    private Utente Utente;
+    private Utente utente;
 
     @ManyToOne
     private Libro libro;
@@ -73,11 +73,11 @@ public class Recensione {
 	}
 
 	public Utente getUtente() {
-		return Utente;
+		return utente;
 	}
 
 	public void setUtente(Utente utente) {
-		Utente = utente;
+		this.utente = utente;
 	}
 
 	public Libro getLibro() {
